@@ -16,8 +16,7 @@ from neo4j import GraphDatabase
 from mapper import UnsupportedQueryError
 from pipeline import answer
 
-
-NEO4J_URI = os.environ.get("NEO4J_URI", "bolt://localhost:7687")
+NEO4J_URI = os.environ.get("NEO4J_URI", "bolt://127.0.0.1:7687")
 NEO4J_USER = os.environ.get("NEO4J_USER", "neo4j")
 NEO4J_PASSWORD = os.environ.get("NEO4J_PASSWORD", "testtest")
 
@@ -34,16 +33,36 @@ def main(argv: list[str]) -> int:
       - Catch UnsupportedQueryError and print its message to stderr
         with exit code 1.
     """
-    # TODO (CLI):
-    # 1. Parse argv to extract the question text. Print usage if missing.
-    # 2. Build a Neo4j driver from the env vars above.
-    # 3. Call answer(driver, question); pretty-print the rows.
-    # 4. Handle UnsupportedQueryError → stderr message + exit 1.
-    # 5. Close the driver in a finally block.
-    raise NotImplementedError(
-        "cli.main is not yet implemented — see the Integration Guide "
-        "CLI section."
-    )
+    # 1. Parse argv to extract the question text
+    if len(argv) < 2:
+        print("Usage: python cli.py \"<question>\"", file=sys.stderr)
+        return 2
+    
+    question = argv[1]
+    
+    # 2. Build a Neo4j driver from the env vars
+    driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+    
+    try:
+        # 3. Call answer(driver, question) and pretty-print rows
+        rows = answer(driver, question)
+        
+        if not rows:
+            print("(no results)")
+        else:
+            for row in rows:
+                print(row)
+        
+        return 0
+    
+    except UnsupportedQueryError as e:
+        # 4. Handle UnsupportedQueryError → stderr message + exit 1
+        print(str(e), file=sys.stderr)
+        return 1
+    
+    finally:
+        # 5. Close the driver in a finally block
+        driver.close()
 
 
 if __name__ == "__main__":
