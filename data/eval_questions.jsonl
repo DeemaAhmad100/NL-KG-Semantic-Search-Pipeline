@@ -1,0 +1,15 @@
+{"question_id": "q1", "question_text": "Find recipes that use ginger", "shape": "q1", "slots": {"ingredient": "ginger"}}
+{"question_id": "q2", "question_text": "Find recipes by author Maria Rossi", "shape": "q2", "slots": {"author": "Maria Rossi"}}
+{"question_id": "q3", "question_text": "Find Italian recipes", "shape": "q3", "slots": {"cuisine": "Italian"}}
+{"question_id": "q4", "question_text": "Find Asian recipes", "shape": "q4", "slots": {"cuisine": "Asian"}}
+{"question_id": "q5", "question_text": "Find Sichuan recipes that use ginger", "shape": "q5", "slots": {"cuisine": "Sichuan", "ingredient": "ginger"}}
+{"question_id": "q6", "question_text": "Find Chinese recipes that use ginger", "shape": "q6", "slots": {"cuisine": "Chinese", "ingredient": "ginger"}}
+{"question_id": "q7", "question_text": "Find recipes that require wok technique", "shape": "q7", "slots": {"technique": "wok"}}
+{"question_id": "q8", "question_text": "Find recipes by author Maria Rossi that use basil", "shape": "q8", "slots": {"author": "Maria Rossi", "ingredient": "basil"}}
+{"question_id": "q9", "question_text": "Find Italian recipes ranked by popularity", "shape": "q9", "slots": {"cuisine": "Italian"}}
+{"question_id": "q10", "question_text": "Find recipes with prep time under 30 minutes", "shape": "q10", "slots": {"max_minutes": 30}}
+{"question_id": "q11", "question_text": "Find ingredients used in Italian recipes", "shape": "q11", "slots": {"cuisine": "Italian"}}
+{"question_id": "q12", "question_text": "Find authors of Sichuan recipes", "shape": "q12", "slots": {"cuisine": "Sichuan"}}
+{"question_id": "q13", "question_text": "Find recipes that use peppercorn or any subtype", "shape": "q13", "slots": {"ingredient": "peppercorn"}}
+{"question_id": "q14", "question_text": "Find recipes that use ginger but not garlic", "shape": "q14", "slots": {"ingredient": "ginger", "exclude_ingredient": "garlic"}}
+{"question_id": "q15", "question_text": "Find recipes optionally tagged with wok technique", "shape": "q15", "slots": {"technique": "wok"}}

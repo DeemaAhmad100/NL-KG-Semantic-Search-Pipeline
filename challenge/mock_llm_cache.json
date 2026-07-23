@@ -1,0 +1,62 @@
+{
+  "Find recipes that use ginger": {
+    "cypher": "MATCH (r:Recipe)-[:USES_INGREDIENT]->(:Ingredient {name: $ingredient}) RETURN r.name AS recipe ORDER BY r.name LIMIT 50",
+    "params": {"ingredient": "ginger"}
+  },
+  "Find recipes by author Maria Rossi": {
+    "cypher": "MATCH (r:Recipe)-[:BY_AUTHOR]->(:Author {name: $author}) RETURN r.name AS recipe ORDER BY r.name LIMIT 50",
+    "params": {"author": "Maria Rossi"}
+  },
+  "Find Italian recipes": {
+    "cypher": "MATCH (r:Recipe)-[:OF_CUISINE]->(:Cuisine {name: $cuisine}) RETURN r.name AS recipe ORDER BY r.name LIMIT 50",
+    "params": {"cuisine": "Italian"}
+  },
+  "Find Asian recipes": {
+    "cypher": "MATCH (r:Recipe)-[:OF_CUISINE]->(c:Cuisine) MATCH (c)-[:SUBCLASS_OF*0..]->(:Cuisine {name: $cuisine}) RETURN r.name AS recipe ORDER BY r.name LIMIT 50",
+    "params": {"cuisine": "Asian"}
+  },
+  "Find Sichuan recipes that use ginger": {
+    "cypher": "MATCH (r:Recipe)-[:OF_CUISINE]->(:Cuisine {name: $cuisine}) MATCH (r)-[:USES_INGREDIENT]->(:Ingredient {name: $ingredient}) RETURN r.name AS recipe ORDER BY r.name LIMIT 50",
+    "params": {"cuisine": "Sichuan", "ingredient": "ginger"}
+  },
+  "Find Chinese recipes that use ginger": {
+    "cypher": "MATCH (r:Recipe)-[:OF_CUISINE]->(c:Cuisine) MATCH (c)-[:SUBCLASS_OF*0..]->(:Cuisine {name: $cuisine}) MATCH (r)-[:USES_INGREDIENT]->(:Ingredient {name: $ingredient}) RETURN r.name AS recipe ORDER BY r.name LIMIT 50",
+    "params": {"cuisine": "Chinese", "ingredient": "ginger"}
+  },
+  "Find recipes that require wok technique": {
+    "cypher": "MATCH (r:Recipe)-[:REQUIRES_TECHNIQUE]->(:Technique {name: $technique}) RETURN r.name AS recipe ORDER BY r.name LIMIT 50",
+    "params": {"technique": "wok"}
+  },
+  "Find recipes by author Maria Rossi that use basil": {
+    "cypher": "MATCH (r:Recipe)-[:BY_AUTHOR]->(:Author {name: $author}) MATCH (r)-[:USES_INGREDIENT]->(:Ingredient {name: $ingredient}) RETURN r.name AS recipe ORDER BY r.name LIMIT 50",
+    "params": {"author": "Maria Rossi", "ingredient": "basil"}
+  },
+  "Find Italian recipes ranked by popularity": {
+    "cypher": "MATCH (r:Recipe)-[:OF_CUISINE]->(:Cuisine {name: $cuisine}) RETURN r.name AS recipe, r.popularityScore AS popularity ORDER BY r.popularityScore DESC, r.name ASC LIMIT 10",
+    "params": {"cuisine": "Italian"}
+  },
+  "Find recipes with prep time under 30 minutes": {
+    "cypher": "MATCH (r:Recipe) WHERE r.prepMinutes < $max_minutes RETURN r.name AS recipe, r.prepMinutes AS prepMinutes ORDER BY r.name LIMIT 50",
+    "params": {"max_minutes": 30}
+  },
+  "Find ingredients used in Italian recipes": {
+    "cypher": "MATCH (:Recipe)-[:OF_CUISINE]->(:Cuisine {name: $cuisine}) WITH 1 AS _ MATCH (r:Recipe)-[:OF_CUISINE]->(:Cuisine {name: $cuisine}) MATCH (r)-[:USES_INGREDIENT]->(i:Ingredient) RETURN DISTINCT i.name AS ingredient ORDER BY i.name LIMIT 50",
+    "params": {"cuisine": "Italian"}
+  },
+  "Find authors of Sichuan recipes": {
+    "cypher": "MATCH (r:Recipe)-[:OF_CUISINE]->(c:Cuisine) MATCH (c)-[:SUBCLASS_OF*0..]->(:Cuisine {name: $cuisine}) MATCH (r)-[:BY_AUTHOR]->(a:Author) RETURN DISTINCT a.name AS author, count(r) AS recipe_count ORDER BY recipe_count DESC, a.name ASC LIMIT 10",
+    "params": {"cuisine": "Sichuan"}
+  },
+  "Find recipes that use peppercorn or any subtype": {
+    "cypher": "MATCH (i:Ingredient {name: $ingredient}) MATCH (descendant:Ingredient)-[:SUBCLASS_OF*0..]->(i) MATCH (r:Recipe)-[:USES_INGREDIENT]->(descendant) RETURN DISTINCT r.name AS recipe ORDER BY r.name LIMIT 50",
+    "params": {"ingredient": "peppercorn"}
+  },
+  "Find recipes that use ginger but not garlic": {
+    "cypher": "MATCH (r:Recipe)-[:USES_INGREDIENT]->(:Ingredient {name: $ingredient}) WHERE NOT EXISTS { MATCH (r)-[:USES_INGREDIENT]->(:Ingredient {name: $exclude_ingredient}) } RETURN r.name AS recipe ORDER BY r.name LIMIT 50",
+    "params": {"ingredient": "ginger", "exclude_ingredient": "garlic"}
+  },
+  "Find recipes optionally tagged with wok technique": {
+    "cypher": "MATCH (r:Recipe) OPTIONAL MATCH (r)-[:REQUIRES_TECHNIQUE]->(t:Technique {name: $technique}) RETURN r.name AS recipe, t.name AS technique ORDER BY r.name LIMIT 50",
+    "params": {"technique": "wok"}
+  }
+}

@@ -1,0 +1,16 @@
+services:
+  neo4j:
+    image: neo4j:5-community
+    container_name: m9b-int-9b-neo4j
+    ports:
+      - "7687:7687"
+      - "7474:7474"
+    environment:
+      NEO4J_AUTH: neo4j/testtest
+      NEO4J_dbms_memory_heap_max__size: 1G
+      NEO4J_dbms_memory_pagecache_size: 512M
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -a bolt://localhost:7687 -u neo4j -p testtest 'RETURN 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 24
