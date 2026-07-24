@@ -10,7 +10,26 @@ Triple-stated Tier 3 scoring methodology (verbatim):
 - Aggregation: per-question correctness + overall accuracy (correct / 15).
   No partial credit on rows.
 """
+"""GraphCypherQAChain-style helper for the live-LLM Tier 3 path.
 
+Triple-stated Tier 3 scoring methodology (verbatim in
+integration-task-spec.md, the published Integration Guide Tier 3
+section, and this docstring):
+
+- The 15 canonical eval questions in data/eval_questions.jsonl are scored by
+  exact-result-set equivalence against the deterministic mapper's output on
+  the same fixture graph (the deterministic mapper is the gold).
+- A Tier 3 answer is correct iff the executed Cypher returns exactly the
+  same set of result rows as the deterministic mapper for that question;
+  row order matters only for the two ranked questions (#9, #12) where
+  ORDER BY is in the canonical shape.
+- A Tier 3 answer that raises UnsupportedCypherError (allowlist rejection)
+  counts as incorrect for that question but is REPORTED SEPARATELY in the
+  autograder summary so learners can distinguish "LLM emitted unsafe Cypher"
+  from "LLM emitted safe-but-wrong Cypher".
+- Aggregation: report per-question correctness plus an overall accuracy
+  (correct / 15). No partial credit on rows.
+"""
 from __future__ import annotations
 
 from typing import Any
