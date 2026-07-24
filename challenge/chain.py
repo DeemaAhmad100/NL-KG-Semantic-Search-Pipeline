@@ -30,8 +30,21 @@ section, and this docstring):
 - Aggregation: report per-question correctness plus an overall accuracy
   (correct / 15). No partial credit on rows.
 """
+
 from __future__ import annotations
 
+"""GraphCypherQAChain-style helper for the live-LLM Tier 3 path.
+
+... (باقي الـ docstring)
+"""
+
+from typing import Any
+
+from neo4j import GraphDatabase
+
+from .allowlist import UnsupportedCypherError, validate_query_shape
+from .few_shots import EXAMPLE_PAIRS, SCHEMA_PREAMBLE
+from .llm_client import get_llm_client
 from typing import Any
 
 from neo4j import GraphDatabase
